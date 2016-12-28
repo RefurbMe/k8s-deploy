@@ -29,6 +29,7 @@ else
   sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
   sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
   sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+  GOOGLE_APPLICATION_CREDENTIALS=${HOME}/account-auth.json
 
   # Deploy
   sudo /opt/google-cloud-sdk/bin/gcloud docker -- push $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM
