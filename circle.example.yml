@@ -1,0 +1,22 @@
+machine:
+  services:
+    - docker
+  environment:
+    REPO_NAME: "${CIRCLE_PROJECT_REPONAME,,}"
+
+dependencies:
+  override:
+    - docker build -t $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM .
+    - docker tag $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:latest
+
+test:
+  override:
+    - docker run $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM npm test
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - git clone git@github.com:RefurbMe/k8s-deploy.git
+      - cd ./k8s-deploy && chmod +x ./deploy.sh
+      - ./deploy.sh
