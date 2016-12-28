@@ -13,7 +13,6 @@
 set -e
 
 # Kubernetes Configuration
-K8S_VERSION="1.4.7"
 IMAGE_REGISTRY="us.gcr.io"
 
 if [ -z "$GCLOUD_SERVICE_KEY" ]; then
