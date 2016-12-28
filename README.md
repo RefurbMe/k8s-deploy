@@ -24,20 +24,27 @@ gcloud projects add-iam-policy-binding ${PROJECT_NAME} --member serviceAccount:c
 ```sh
 
 CIRCLE_TOKEN="xxxxxxx"
+GIT_ACCOUNT="xxxxxxx"
 repos=( "service-1" "service-2" "service-3" "service-4" )
 
 for repo in "${repos[@]}"
 do
   echo "\n$repo\n"
 
-  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"GCLOUD_SERVICE_KEY\", \"value\":\"${GCLOUD_SERVICE_KEY}\"}" "https://circleci.com/api/v1.1/project/github/RefurbMe/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
+  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"GCLOUD_SERVICE_KEY\", \"value\":\"${GCLOUD_SERVICE_KEY}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
 
-  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"PROJECT_NAME\", \"value\":\"${PROJECT_NAME}\"}" "https://circleci.com/api/v1.1/project/github/RefurbMe/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
+  sleep 0.5;
 
-  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"CLOUDSDK_COMPUTE_ZONE\", \"value\":\"${CLOUDSDK_COMPUTE_ZONE}\"}" "https://circleci.com/api/v1.1/project/github/RefurbMe/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
+  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"PROJECT_NAME\", \"value\":\"${PROJECT_NAME}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
 
-  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"CLUSTER_NAME\", \"value\":\"${CLUSTER_NAME}\"}" "https://circleci.com/api/v1.1/project/github/RefurbMe/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
+  sleep 0.5;
 
-  sleep 1;
+  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"CLOUDSDK_COMPUTE_ZONE\", \"value\":\"${CLOUDSDK_COMPUTE_ZONE}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
+
+  sleep 0.5;
+
+  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"CLUSTER_NAME\", \"value\":\"${CLUSTER_NAME}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
+
+  sleep 0.5;
 done
 ```
