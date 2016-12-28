@@ -31,7 +31,9 @@ else
   sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
 
   # Deploy
-  sudo /opt/google-cloud-sdk/bin/gcloud docker push ${IMAGE_NAME}
+  sudo /opt/google-cloud-sdk/bin/gcloud docker -- push $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM
+  sudo /opt/google-cloud-sdk/bin/gcloud docker -- push $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:latest
+
   sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
   kubectl set image deployment/$REPO_NAME $REPO_NAME=$IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM
 fi

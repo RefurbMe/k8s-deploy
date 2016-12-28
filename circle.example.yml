@@ -18,5 +18,5 @@ deployment:
     branch: master
     commands:
       - git clone git@github.com:RefurbMe/k8s-deploy.git
-      - cd ./k8s-deploy && chmod +x ./deploy.sh
-      - ./deploy.sh
+      - chmod +x ./k8s-deploy/deploy.sh
+      - ./k8s-deploy/deploy.sh
