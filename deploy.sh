@@ -33,8 +33,7 @@ else
   # Deploy
   sudo /opt/google-cloud-sdk/bin/gcloud docker push ${IMAGE_NAME}
   sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
-  kubectl patch deployment $REPO_NAME -p '{"spec":{"template":{"spec":{"containers":[{"name":"'"$REPO_NAME"'"","image":"'"$IMAGE_REGISTRY"'/'"$IMAGE_REGISTRY"'/'"$REPO_NAME"':'"$CIRCLE_BUILD_NUM"'"}]}}}}'
-
+  kubectl set image deployment/$REPO_NAME $REPO_NAME=$IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM
 fi
 
 echo "Deployed !"
