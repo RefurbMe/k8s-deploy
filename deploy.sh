@@ -27,15 +27,14 @@ else
   sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
   sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
   sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-  sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
-  GOOGLE_APPLICATION_CREDENTIALS=${HOME}/account-auth.json
+  sudo /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $CLUSTER_NAME
 
   # Deploy
   sudo /opt/google-cloud-sdk/bin/gcloud docker -- push $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM
   sudo /opt/google-cloud-sdk/bin/gcloud docker -- push $IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:latest
 
   sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
-  kubectl set image deployment/$REPO_NAME $REPO_NAME=$IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM
+  sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/account-auth.json /opt/google-cloud-sdk/bin/kubectl set image deployment/$REPO_NAME $REPO_NAME=$IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM
 fi
 
 echo "Deployed !"
