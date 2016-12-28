@@ -35,6 +35,7 @@ else
 
   sudo chown -R ubuntu:ubuntu /home/ubuntu/.kube
   sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/account-auth.json /opt/google-cloud-sdk/bin/kubectl set image deployment/$REPO_NAME $REPO_NAME=$IMAGE_REGISTRY/$PROJECT_NAME/$REPO_NAME:$CIRCLE_BUILD_NUM
+  sudo GOOGLE_APPLICATION_CREDENTIALS=${HOME}/account-auth.json /opt/google-cloud-sdk/bin/kubectl rollout status deployment/$REPO_NAME
 fi
 
 echo "Deployed !"
