@@ -17,15 +17,20 @@ gcloud projects add-iam-policy-binding ${PROJECT_NAME} --member serviceAccount:c
 gcloud projects add-iam-policy-binding ${PROJECT_NAME} --member serviceAccount:circleci@${PROJECT_NAME}.iam.gserviceaccount.com --role roles/container.clusterAdmin
 gcloud projects add-iam-policy-binding ${PROJECT_NAME} --member serviceAccount:circleci@${PROJECT_NAME}.iam.gserviceaccount.com --role roles/container.developer
 gcloud projects add-iam-policy-binding ${PROJECT_NAME} --member serviceAccount:circleci@${PROJECT_NAME}.iam.gserviceaccount.com --role roles/storage.admin
-
+gcloud iam service-accounts keys create key.json --iam-account circleci@${PROJECT_NAME}.iam.gserviceaccount.com
+GCLOUD_SERVICE_KEY=`base64 key.json`
 ```
+
+
+# Setup your Kubernetes cluster (sample code)
+Full instructions on: https://github.com/RefurbMe/k8s-sample
 
 # Edit in batch environment variables for CircleCI
 ```sh
 
 CIRCLE_TOKEN="xxxxxxx"
 GIT_ACCOUNT="xxxxxxx"
-repos=( "service-1" "service-2" "service-3" "service-4" )
+repos=( "api" "frontend" )
 
 for repo in "${repos[@]}"
 do
