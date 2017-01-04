@@ -27,9 +27,15 @@ Full instructions on: https://github.com/RefurbMe/k8s-sample
 
 # Edit in batch environment variables for CircleCI
 ```sh
+# GCLOUD_SERVICE_KEY=`base64 key.json` # comes from the guide above
 
-CIRCLE_TOKEN="xxxxxxx"
-GIT_ACCOUNT="xxxxxxx"
+CIRCLE_TOKEN="your-circleci-api-token"
+GIT_ACCOUNT="your-github-username"
+
+IMAGE_REGISTRY='us.gcr.io'
+PROJECT_NAME="your-project-name"
+CLOUDSDK_COMPUTE_ZONE='us-east1-b'
+CLUSTER_NAME="your-cluster-name"
 repos=( "api" "frontend" )
 
 for repo in "${repos[@]}"
@@ -37,19 +43,18 @@ do
   echo "\n$repo\n"
 
   curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"GCLOUD_SERVICE_KEY\", \"value\":\"${GCLOUD_SERVICE_KEY}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
+  sleep 0.5;
 
+  curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"IMAGE_REGISTRY\", \"value\":\"${IMAGE_REGISTRY}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
   sleep 0.5;
 
   curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"PROJECT_NAME\", \"value\":\"${PROJECT_NAME}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
-
   sleep 0.5;
 
   curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"CLOUDSDK_COMPUTE_ZONE\", \"value\":\"${CLOUDSDK_COMPUTE_ZONE}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
-
   sleep 0.5;
 
   curl -X POST --header "Content-Type: application/json" -d "{\"name\":\"CLUSTER_NAME\", \"value\":\"${CLUSTER_NAME}\"}" "https://circleci.com/api/v1.1/project/github/${GIT_ACCOUNT}/${repo}/envvar?circle-token=${CIRCLE_TOKEN}"
-
   sleep 0.5;
 done
 ```
