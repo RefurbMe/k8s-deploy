@@ -15,6 +15,12 @@ set -e
 # Kubernetes Configuration
 IMAGE_REGISTRY="us.gcr.io"
 
+if [ ! -z "$GITHUB_API_TOKEN" ]; then
+  RELEASE_TAG_NAME="v1.$CIRCLE_BUILD_NUM.0"
+  curl -H "Content-Type: application/json" -X POST -d '{"tag_name":"'$RELEASE_TAG_NAME'","name":"'$REPO_NAME' '$RELEASE_TAG_NAME'"}' https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases
+  echo "Released $RELEASE_TAG_NAME on github"
+fi
+
 if [ -z "$GCLOUD_SERVICE_KEY" ]; then
   echo "GCLOUD_SERVICE_KEY is not set on your CI"
   exit 1;
